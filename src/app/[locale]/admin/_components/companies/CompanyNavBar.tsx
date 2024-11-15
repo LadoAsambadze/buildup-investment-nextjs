@@ -104,9 +104,9 @@ const CompanyNavBar = ({ companies }: { companies: CompanyTypes[] }) => {
     const path = typeof pathname === "string" ? pathname : "";
     router.push(`${path}${query}`);
   };
-  
+
   return (
-    <div className="w-64 bg-white border-r h-screen flex flex-col">
+    <div className="w-64 bg-white border-r border-t border-slate-300 h-screen flex flex-col">
       <div className="p-4 border-b">
         <h2 className="font-semibold text-lg mb-4">Companies</h2>
         {isAddingCompany ? (

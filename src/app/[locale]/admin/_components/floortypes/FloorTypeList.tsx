@@ -212,11 +212,11 @@ const FloorPlanForm = ({ initialData, onSubmit, onCancel }) => {
   );
 };
 
-export default function FloorPlansList({
+export default function FloorTypeList({
   building_id,
   floor_number,
 }: {
-  building_id?: string;
+  building_id?: number;
   floor_number?: number;
 }) {
   const [floorPlans, setFloorPlans] = useState([]);
