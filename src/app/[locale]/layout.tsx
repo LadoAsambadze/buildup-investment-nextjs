@@ -5,6 +5,7 @@ import { routing, Locale } from "@/i18n/routing";
 import "./globals.css";
 import Header from "@/components/header/Header";
 
+
 export default async function LocaleLayout({
   children,
   params,
@@ -22,10 +23,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider messages={messages}>
-          <Header />
-          {children}
-        </NextIntlClientProvider>
+      
+          <NextIntlClientProvider messages={messages}>
+            <Header />
+            {children}
+          </NextIntlClientProvider>
+     
       </body>
     </html>
   );

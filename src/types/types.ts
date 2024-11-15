@@ -1,12 +1,11 @@
-import { paths } from "./api";
+export type BuildingTypes  = {
+  id: number;
+  name: string;
+  address: string;
+  company_id: number;
+};
 
-export type CompaniesResponse =
-  paths["/companies"]["get"]["responses"]["200"]["content"]["application/json"];
-
-export type CreateCompanyRequest =
-  paths["/create-company"]["post"]["requestBody"]["content"]["application/json"];
-
-  
 export type CompanyTypes = {
-  companies: CompaniesResponse;
+  id: number;
+  name: string;
 };
