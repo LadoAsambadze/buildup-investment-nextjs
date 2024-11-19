@@ -1,7 +1,6 @@
-
 "use client"
-import React, { useState } from "react";
-import { Upload, X, Plus } from "lucide-react";
+import { useState } from "react";
+import {  X, Plus } from "lucide-react";
 import axiosInstance from "@/utils/axiosInstance";
 import { BuildingTypes } from "@/types/types";
 
@@ -20,15 +19,21 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
   companyId,
   existingBuilding
 }) => {
-  const [editForm, setEditForm] = useState({
+  const [editForm, setEditForm] = useState<{
+    name: string;
+    address: string;
+    desktop_paths: Record<string, string>;
+    mobile_paths: Record<string, string>;
+    desktop_image: File | null;
+    mobile_image: File | null;
+  }>({
     name: existingBuilding?.name || "",
     address: existingBuilding?.address || "",
     desktop_paths: existingBuilding?.desktop_paths || {},
     mobile_paths: existingBuilding?.mobile_paths || {},
-    desktop_image: null as File | null,
-    mobile_image: null as File | null,
+    desktop_image: null,
+    mobile_image: null,
   });
-
   const [pathInput, setPathInput] = useState({
     desktop: { floor: "", path: "" },
     mobile: { floor: "", path: "" },
@@ -57,7 +62,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
       }
     }));
 
-    // Reset path input
+
     setPathInput(prev => ({
       ...prev,
       [type]: { floor: "", path: "" }
@@ -140,7 +145,22 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
     }
   };
 
-  console.log("!23123", editForm.name)
+  
+  const renderPathList = (type: 'desktop' | 'mobile') => (
+    <div className="space-y-1">
+      {Object.entries(editForm[`${type}_paths`]).map(([floor, path]) => (
+        <div key={floor} className="flex justify-between items-center bg-gray-100 p-2 rounded">
+          <span>Floor {floor}: {path}</span>
+          <button 
+            onClick={() => handleRemovePath(type, floor)}
+            className="text-red-500 hover:text-red-700"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div className="bg-white rounded-lg shadow p-6 space-y-6">
@@ -180,7 +200,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
               onChange={(e) => setPathInput(prev => ({
                 ...prev,
                 desktop: { ...prev.desktop, floor: e.target.value }
-              }))}
+              }))} 
               className="w-1/4 border border-gray-300 rounded-md py-2 px-3"
             />
             <input
@@ -190,7 +210,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
               onChange={(e) => setPathInput(prev => ({
                 ...prev,
                 desktop: { ...prev.desktop, path: e.target.value }
-              }))}
+              }))} 
               className="w-3/4 border border-gray-300 rounded-md py-2 px-3"
             />
             <button
@@ -200,22 +220,10 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
               <Plus className="w-5 h-5" />
             </button>
           </div>
-          <div className="space-y-1">
-            {Object.entries(editForm.desktop_paths).map(([floor, path]) => (
-              <div key={floor} className="flex justify-between items-center bg-gray-100 p-2 rounded">
-                <span>Floor {floor}: {path}</span>
-                <button 
-                  onClick={() => handleRemovePath('desktop', floor)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            ))}
-          </div>
+          {renderPathList('desktop')}
         </div>
 
-        {/* Mobile Paths Section (Similar to Desktop Paths) */}
+        
         <div className="space-y-2">
           <h4 className="text-sm font-medium text-gray-700">Mobile Paths</h4>
           <div className="flex space-x-2">
@@ -226,7 +234,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
               onChange={(e) => setPathInput(prev => ({
                 ...prev,
                 mobile: { ...prev.mobile, floor: e.target.value }
-              }))}
+              }))} 
               className="w-1/4 border border-gray-300 rounded-md py-2 px-3"
             />
             <input
@@ -236,7 +244,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
               onChange={(e) => setPathInput(prev => ({
                 ...prev,
                 mobile: { ...prev.mobile, path: e.target.value }
-              }))}
+              }))} 
               className="w-3/4 border border-gray-300 rounded-md py-2 px-3"
             />
             <button
@@ -246,22 +254,9 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
               <Plus className="w-5 h-5" />
             </button>
           </div>
-          <div className="space-y-1">
-            {Object.entries(editForm.mobile_paths).map(([floor, path]) => (
-              <div key={floor} className="flex justify-between items-center bg-gray-100 p-2 rounded">
-                <span>Floor {floor}: {path}</span>
-                <button 
-                  onClick={() => handleRemovePath('mobile', floor)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            ))}
-          </div>
+          {renderPathList('mobile')}
         </div>
 
-        {/* Image Upload Sections */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Desktop Image</label>
