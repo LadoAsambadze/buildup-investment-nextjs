@@ -1,5 +1,5 @@
-import React from "react";
 import { BuildingTypes } from "@/types/types";
+import { MapPin } from "lucide-react";
 
 interface BuildingCardProps {
   building: BuildingTypes;
@@ -7,29 +7,31 @@ interface BuildingCardProps {
   onApartmentsClick: () => void;
 }
 
-const renderPaths = (paths: Record<string, string>) => (
-  <div className="space-y-1">
-    {Object.entries(paths).map(([floor, path]) => (
-      <div key={floor} className="text-sm">
-        <span className="font-medium">Floor {floor}:</span>
-        <span className="ml-2 text-gray-600">{path}</span>
-      </div>
-    ))}
-  </div>
-);
-
-const BuildingCard: React.FC<BuildingCardProps> = ({ 
+const BuildingCard = ({ 
   building, 
   onFloorTypesClick, 
   onApartmentsClick 
-}) => {
+}:BuildingCardProps) => {
+
+  
+  const renderPaths = (paths: Record<string, string>) => (
+    <div className="space-y-1">
+      {Object.entries(paths).map(([floor, path]) => (
+        <div key={floor} className="text-sm">
+          <span className="font-medium">Floor {floor}:</span>
+          <span className="ml-2 text-gray-600">{path}</span>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="bg-white rounded-lg shadow hover:shadow-md transition-shadow">
       <div className="p-6 space-y-6">
         <div className="flex justify-between items-start">
           <div className="space-y-2">
             <h3 className="text-xl font-semibold">{building.name}</h3>
-            <p className="text-gray-600">{building.address}</p>
+            <div className="text-gray-600 flex flex-row items-center gap-2"><MapPin className="w-4 h-4"/> {building.address}</div>
           </div>
           <div className="flex gap-2">
             <button
@@ -51,11 +53,11 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
           <div className="space-y-2">
             <h4 className="font-medium text-gray-700">Desktop View</h4>
             {building.desktop_image ? (
-              <div className="relative aspect-video">
+              <div className="relative w-40 h-40">
                 <img
                   src={`http://localhost:3000/${building.desktop_image}`}
                   alt={`${building.name} - Desktop View`}
-                  className="rounded object-cover w-full h-full"
+                  className="rounded w-full h-full"
                 />
               </div>
             ) : (
@@ -67,11 +69,11 @@ const BuildingCard: React.FC<BuildingCardProps> = ({
           <div className="space-y-2">
             <h4 className="font-medium text-gray-700">Mobile View</h4>
             {building.mobile_image ? (
-              <div className="relative aspect-video">
+              <div className="relative w-40 h-40">
                 <img
                   src={`http://localhost:3000/${building.mobile_image}`}
                   alt={`${building.name} - Mobile View`}
-                  className="rounded object-cover w-full h-full"
+                  className="rounded w-full h-full"
                 />
               </div>
             ) : (

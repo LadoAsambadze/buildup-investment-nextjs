@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useCallback, useEffect } from "react";
@@ -90,7 +91,7 @@ const BuildingsList = () => {
                 getBuildings();
               }}
               setError={setError}
-              companyId={company_id}
+              companyId={company_id!}
               existingBuilding={editingBuilding || undefined}
             />
           )}

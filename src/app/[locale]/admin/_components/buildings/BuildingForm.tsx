@@ -1,3 +1,5 @@
+
+"use client"
 import React, { useState } from "react";
 import { Upload, X, Plus } from "lucide-react";
 import axiosInstance from "@/utils/axiosInstance";
@@ -118,7 +120,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({
       }
 
       if (existingBuilding) {
-        await axiosInstance.put(`/buildings/1`, formData, {
+        await axiosInstance.put(`/buildings/${existingBuilding.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
