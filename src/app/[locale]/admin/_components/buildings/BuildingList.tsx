@@ -10,11 +10,13 @@ import BuildingForm from "./BuildingForm";
 import BuildingCard from "./BuildingCard";
 import ErrorAlert from "./ErrorAlert";
 import FloorTypeList from "../floortypes/FloorTypeList";
+import ApartmentsList from "../apartments/ApartmentsList";
 
 const BuildingsList = () => {
   const searchParams = useSearchParams();
   const company_id = searchParams.get("company_id");
   const floorTypes = searchParams.get("floorTypes");
+  const apartments = searchParams.get("apartments"); // Check if the apartments query param is present
   const [buildingList, setBuildingList] = useState<BuildingTypes[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -59,11 +61,10 @@ const BuildingsList = () => {
 
   const handleEditBuilding = (building: BuildingTypes) => {
     setEditingBuilding(building);
-    // Close the "Add Building" form if it's open
     setIsAdding(false);
   };
 
-  // Render BuildingsList or FloorTypesList based on query params
+  // Render BuildingsList or FloorTypesList or ApartmentsList based on query params
   if (!company_id) {
     return (
       <div className="text-5xl w-full flex justify-center items-center">
@@ -72,12 +73,14 @@ const BuildingsList = () => {
     );
   }
 
-  // If floorTypes is in the query, render FloorTypesList
   if (floorTypes) {
     return <FloorTypeList buildingId={parseInt(floorTypes)} />;
   }
 
-  // Otherwise, render BuildingsList
+  if (apartments) {
+    return <ApartmentsList buildingId={parseInt(apartments)} />;
+  }
+
   return (
     <Card className="w-full p-6 rounded-none">
       <CardHeader>
@@ -95,7 +98,6 @@ const BuildingsList = () => {
       </CardHeader>
       <CardContent>
         {error && <ErrorAlert message={error} />}
-
         <div className="space-y-4">
           {(isAdding || editingBuilding) && (
             <BuildingForm
