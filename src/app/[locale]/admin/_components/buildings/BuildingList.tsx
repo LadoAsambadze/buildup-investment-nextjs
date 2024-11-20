@@ -1,5 +1,4 @@
-
-"use client"
+"use client";
 
 import { useState, useCallback, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -10,14 +9,18 @@ import axiosInstance from "@/utils/axiosInstance";
 import BuildingForm from "./BuildingForm";
 import BuildingCard from "./BuildingCard";
 import ErrorAlert from "./ErrorAlert";
+import FloorTypeList from "../floortypes/FloorTypeList";
 
 const BuildingsList = () => {
   const searchParams = useSearchParams();
   const company_id = searchParams.get("company_id");
+  const floorTypes = searchParams.get("floorTypes");
   const [buildingList, setBuildingList] = useState<BuildingTypes[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [editingBuilding, setEditingBuilding] = useState<BuildingTypes | null>(null);
+  const [editingBuilding, setEditingBuilding] = useState<BuildingTypes | null>(
+    null
+  );
 
   const pathname = usePathname();
   const router = useRouter();
@@ -60,7 +63,22 @@ const BuildingsList = () => {
     setIsAdding(false);
   };
 
-  return company_id ? (
+  // Render BuildingsList or FloorTypesList based on query params
+  if (!company_id) {
+    return (
+      <div className="text-5xl w-full flex justify-center items-center">
+        Build up Investment
+      </div>
+    );
+  }
+
+  // If floorTypes is in the query, render FloorTypesList
+  if (floorTypes) {
+    return <FloorTypeList buildingId={parseInt(floorTypes)} />;
+  }
+
+  // Otherwise, render BuildingsList
+  return (
     <Card className="w-full p-6 rounded-none">
       <CardHeader>
         <CardTitle>Buildings</CardTitle>
@@ -84,7 +102,7 @@ const BuildingsList = () => {
               onCancel={() => {
                 setIsAdding(false);
                 setEditingBuilding(null);
-              }} 
+              }}
               onSuccess={() => {
                 setIsAdding(false);
                 setEditingBuilding(null);
@@ -99,9 +117,13 @@ const BuildingsList = () => {
           {buildingList?.map((building) => (
             <div key={building.id} className="relative group">
               <BuildingCard
-                building={building} 
-                onFloorTypesClick={() => addQueryHandler("floorTypes", building.id!)}
-                onApartmentsClick={() => addQueryHandler("apartments", building.id!)}
+                building={building}
+                onFloorTypesClick={() =>
+                  addQueryHandler("floorTypes", building.id!)
+                }
+                onApartmentsClick={() =>
+                  addQueryHandler("apartments", building.id!)
+                }
               />
               <button
                 onClick={() => handleEditBuilding(building)}
@@ -114,10 +136,6 @@ const BuildingsList = () => {
         </div>
       </CardContent>
     </Card>
-  ) : (
-    <div className="text-5xl w-full flex justify-center items-center">
-      Build up Investment
-    </div>
   );
 };
 

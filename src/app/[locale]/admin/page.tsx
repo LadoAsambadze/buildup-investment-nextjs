@@ -1,9 +1,10 @@
 import CompaniesNavbar from "./_components/companies/CompanyNavBar";
 import { Toaster } from "@/components/ui/toaster";
- 
+
 import axiosInstance from "@/utils/axiosInstance";
 import { CompanyTypes } from "@/types/types";
 import BuildingsList from "./_components/buildings/BuildingList";
+import FloorTypeList from "./_components/floortypes/FloorTypeList";
 
 async function getCompanies() {
   try {
@@ -23,6 +24,7 @@ export default async function Page() {
       <Toaster />
       <CompaniesNavbar companies={companies} />
       <BuildingsList />
+      {/* <FloorTypeList /> */}
     </main>
   );
 }

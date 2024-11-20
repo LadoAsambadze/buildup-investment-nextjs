@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import {
   Table,
@@ -213,10 +215,10 @@ const FloorPlanForm = ({ initialData, onSubmit, onCancel }) => {
 };
 
 export default function FloorTypeList({
-  building_id,
   floor_number,
+  buildingId,
 }: {
-  building_id?: number;
+  buildingId: number;
   floor_number?: number;
 }) {
   const [floorPlans, setFloorPlans] = useState([]);
@@ -229,7 +231,7 @@ export default function FloorTypeList({
 
   useEffect(() => {
     fetchFloorPlans();
-  }, [building_id, floor_number]);
+  }, [buildingId, floor_number]);
 
   async function fetchFloorPlans() {
     try {
@@ -237,8 +239,8 @@ export default function FloorTypeList({
       let url = "http://localhost:3000/api/floor-plans";
       const queryParams = [];
 
-      if (building_id) {
-        queryParams.push(`building_id=${building_id}`);
+      if (buildingId) {
+        queryParams.push(`building_id=${buildingId}`);
       }
       if (floor_number) {
         queryParams.push(`floor_number=${floor_number}`);
@@ -356,7 +358,7 @@ export default function FloorTypeList({
     );
   }
 
-  if (!building_id && !floor_number) {
+  if (!buildingId && !floor_number) {
     return (
       <Alert className="mx-4 my-4">
         <AlertDescription>
@@ -368,15 +370,15 @@ export default function FloorTypeList({
   }
 
   return (
-    <Card className="mx-4 my-4">
+    <Card className="mx-4 my-4 w-full">
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
             <CardTitle>Floor Plans</CardTitle>
             <CardDescription>
-              {building_id &&
+              {buildingId &&
                 `Showing floor plans for building ${
-                  floorPlans[0]?.building_name || building_id
+                  floorPlans[0]?.building_name || buildingId
                 }`}
               {floor_number && ` - Floor ${floor_number}`}
             </CardDescription>
