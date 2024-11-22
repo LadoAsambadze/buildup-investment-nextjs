@@ -3,13 +3,13 @@ import { MapPin } from "lucide-react";
 
 interface BuildingCardProps {
   building: BuildingTypes;
-  onFloorTypesClick: () => void;
+  onBuildingIdTypesClick: () => void;
   onApartmentsClick: () => void;
 }
 
 const BuildingCard = ({ 
   building, 
-  onFloorTypesClick, 
+  onBuildingIdTypesClick, 
   onApartmentsClick 
 }:BuildingCardProps) => {
 
@@ -35,7 +35,7 @@ const BuildingCard = ({
           </div>
           <div className="flex gap-2">
             <button
-              onClick={onFloorTypesClick}
+              onClick={onBuildingIdTypesClick}
               className="px-4 py-2 text-blue-600 hover:text-blue-800 border border-blue-600 rounded"
             >
               Floor Types

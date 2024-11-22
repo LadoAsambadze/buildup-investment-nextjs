@@ -9,13 +9,13 @@ import axiosInstance from "@/utils/axiosInstance";
 import BuildingForm from "./BuildingForm";
 import BuildingCard from "./BuildingCard";
 import ErrorAlert from "./ErrorAlert";
-import FloorTypeList from "../floortypes/FloorTypeList";
 import ApartmentsList from "../apartments/ApartmentsList";
+import FloorPlanDashboard from "../floortypes/FloorTypeList";
 
 const BuildingsList = () => {
   const searchParams = useSearchParams();
   const company_id = searchParams.get("company_id");
-  const floorTypes = searchParams.get("floorTypes");
+  const buildingId = searchParams.get("buildingId");
   const apartments = searchParams.get("apartments"); // Check if the apartments query param is present
   const [buildingList, setBuildingList] = useState<BuildingTypes[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -46,11 +46,11 @@ const BuildingsList = () => {
   }, [company_id, getBuildings]);
 
   const addQueryHandler = (
-    type: "floorTypes" | "apartments",
+    type: "buildingId" | "apartments",
     building_id: number
   ) => {
     const currentParams = new URLSearchParams(searchParams.toString());
-    const otherType = type === "floorTypes" ? "apartments" : "floorTypes";
+    const otherType = type === "buildingId" ? "apartments" : "buildingId";
     currentParams.delete(otherType);
     currentParams.set(type, building_id.toString());
     const search = currentParams.toString();
@@ -64,7 +64,7 @@ const BuildingsList = () => {
     setIsAdding(false);
   };
 
-  // Render BuildingsList or FloorTypesList or ApartmentsList based on query params
+  // Render BuildingsList or buildingIdList or ApartmentsList based on query params
   if (!company_id) {
     return (
       <div className="text-5xl w-full flex justify-center items-center">
@@ -73,8 +73,8 @@ const BuildingsList = () => {
     );
   }
 
-  if (floorTypes) {
-    return <FloorTypeList buildingId={parseInt(floorTypes)} />;
+  if (buildingId) {
+    return <FloorPlanDashboard buildingId={parseInt(buildingId)} />;
   }
 
   if (apartments) {
@@ -120,8 +120,8 @@ const BuildingsList = () => {
             <div key={building.id} className="relative group">
               <BuildingCard
                 building={building}
-                onFloorTypesClick={() =>
-                  addQueryHandler("floorTypes", building.id!)
+                onBuildingIdTypesClick={() =>
+                  addQueryHandler("buildingId", building.id!)
                 }
                 onApartmentsClick={() =>
                   addQueryHandler("apartments", building.id!)
